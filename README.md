@@ -31,6 +31,6 @@ j) Duration of the vowel
 k) Intensity of the vowel at its mid point
 
 ## CREDITS
- (c) Wendy Elvira García (2017) wendyelvira-ga/contact
+ (c) Wendy Elvira García (2017) wendyelvira.ga/contact
  Laboratori de Fonètica (Universitat de Barcelona) http://stel.ub.edu/labfon/en
 
