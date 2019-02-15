@@ -1,7 +1,7 @@
 
 
  # vowelFormants v1 (17 January 2017)
- This script goes through all the files in a folder and writes in a txt information about formants, duration, intensity and F0.
+ This Praat script goes through all the files in a folder and writes in a txt information about formants, duration, intensity and F0.
 
 ## REQUIREMENTS [INPUT]
 A sound and a Textgrid with THE SAME filename and without spaces in the filename. For example this_is_my_sentence.wav and this_is_my_sentence.TextGrid
