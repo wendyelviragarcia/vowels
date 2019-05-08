@@ -15,7 +15,7 @@ a, e, i ,o ,u, ɪ, ɛ, æ, ɑ, ɔ, ʊ, ʌ, ɝ
 a) Folder where the files you want to analyse are
 b) Name of the txt where the results will be saved
 c) Data to optimise the formantic analysis
-d) Data to optimise the pitch (F0) detection
+d) Data for optimizing the pitch (F0) detection
 
 ## OUTPUT
 The output is a tab separated txt file (can be dragged to Excel, beware decimals are ".") with the following information in columns.
@@ -31,6 +31,6 @@ j) Duration of the vowel
 k) Intensity of the vowel at its mid point
 
 ## CREDITS
- (c) Wendy Elvira García (2017) wendyelvira.ga/contact
+ (c) Wendy Elvira García (2017) wendyelvira.ga/contact.html
  Laboratori de Fonètica (Universitat de Barcelona) http://stel.ub.edu/labfon/en
 
