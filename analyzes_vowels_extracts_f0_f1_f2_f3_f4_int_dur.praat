@@ -18,7 +18,7 @@
 #		d) Data to optimise the pitch (F0) detection
 #
 #		OUTPUT
-#	The output is a tab separated txt file (can be dragged to Excel, beware decimals are ".") with the following information in columns.
+#	The output is a tab separated txt file (can be dragged to Excel, beware decimals are "." you can change that uncommenting like 118) with the following information in columns.
 #		a) file name
 #		b) number of the Interval
 #		c) label of the interval in the tier of the analysis: vowel
@@ -115,7 +115,7 @@ for file to nFiles
 			#fix decimals
 			durIntervalms$ = fixed$(durIntervalms, tier)
 			#change decimal marker for commas
-			durIntervalms$ = replace$ (durIntervalms$, ".", ",", 1)
+			#durIntervalms$ = replace$ (durIntervalms$, ".", ",", 1)
 			
 			#looks for time aligned labels in other tiers
 			
