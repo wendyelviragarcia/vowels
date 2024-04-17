@@ -154,7 +154,6 @@ for file to nFiles
 			midInt = Get value at time: midInterval, "Cubic"
 			midInt$ = fixed$(midInt,0)
 			appendFileLine: folder$ + "/"+ txtName$, durIntervalms$, tab$, midInt$
-			removeObject: myIntensity
 		endif
 		#close interval loop
 	
