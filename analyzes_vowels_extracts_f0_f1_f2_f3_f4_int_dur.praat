@@ -85,6 +85,11 @@ for file to nFiles
 	nOfIntervals = Get number of intervals: tier
 	Convert to Unicode
 	
+	selectObject: mySound
+	myFormant = To Formant (burg): time_step, maximum_number_of_formants, maximum_formant, window_length, preemphasis_from
+	selectObject: mySound
+	myIntensity = To Intensity: 500, 0, "yes"	
+
 	#loops intervals
 	nInterval=1
 	for nInterval from 1 to nOfIntervals
@@ -131,8 +136,7 @@ for file to nFiles
 			removeObject: myPitch
 			
 			#look for formants
-			selectObject: mySound
-			myFormant = To Formant (burg): time_step, maximum_number_of_formants, maximum_formant, window_length, preemphasis_from
+			selectObject: myFormant
 			
 			f1 = Get value at time: 1, midInterval, "Hertz", "Linear"
 			f2 = Get value at time: 2, midInterval, "Hertz", "Linear"
@@ -144,11 +148,9 @@ for file to nFiles
 			f4$ = fixed$(f4, 0)
 			# Save result to text file:
 			appendFile: folder$ + "/"+ txtName$, f0$, tab$, f1$, tab$, f2$, tab$, f3$, tab$, f4$, tab$
-			removeObject: myFormant
 			
 			# look for intensity
-			selectObject: mySound
-			myIntensity = To Intensity: 500, 0, "yes"
+			selectObject:myIntensity
 			midInt = Get value at time: midInterval, "Cubic"
 			midInt$ = fixed$(midInt,0)
 			appendFileLine: folder$ + "/"+ txtName$, durIntervalms$, tab$, midInt$
@@ -158,7 +160,7 @@ for file to nFiles
 	
 	endfor
 	#close file loop
-removeObject: myTextGrid, mySound
+removeObject: myTextGrid, mySound, myFormant, myIntensity
 endfor
 removeObject: myList
 	echo Done.
