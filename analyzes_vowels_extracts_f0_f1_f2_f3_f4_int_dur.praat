@@ -152,7 +152,6 @@ for file to nFiles
 			endif
 			
 			f0$ = fixed$(f0, 0)
-			removeObject: myPitch
 			
 			#look for formants
 			selectObject: myFormant
@@ -178,7 +177,7 @@ for file to nFiles
 	
 	endfor
 	#close file loop
-removeObject: myTextGrid, mySound, myFormant, myIntensity
+removeObject: myTextGrid, mySound, myFormant, myIntensity, myPitch
 endfor
 removeObject: myList
 	echo Done.
