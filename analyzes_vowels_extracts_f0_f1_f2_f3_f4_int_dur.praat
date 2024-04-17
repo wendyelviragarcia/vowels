@@ -130,11 +130,7 @@ for file to nFiles
 			#durIntervalms$ = replace$ (durIntervalms$, ".", ",", 1)
 
 
-			# center 30 milliseconds
-			margin = (durInterval-0.03)/2 
-			if margin< 0
-				margin = 0
-			endif
+			
 			
 			#writes interval in the output
 			appendFile: folder$ + "/"+ txtName$, myTextGrid$, tab$, nInterval, tab$, labelOfInterval$, tab$
@@ -145,7 +141,16 @@ for file to nFiles
 			
 			f0 = Get value at time: midInterval, "Hertz", "Linear"
 			
-			#f0 = Get mean: startPoint+margin, endPoint-margin, "Hertz"
+
+			if extraction = 2
+				# center 30 milliseconds
+				margin = (durInterval-0.03)/2 
+				if margin< 0
+					margin = 0
+				endif
+				f0 = Get mean: startPoint+margin, endPoint-margin, "Hertz"
+			endif
+			
 			f0$ = fixed$(f0, 0)
 			removeObject: myPitch
 			
