@@ -47,6 +47,11 @@ form Pausas vowelFormants
 	integer tier 1
 	comment _
 	comment Data formantic analysis
+comment Do you want to extract data from the mid point? 
+comment Or the mean from 30 centered milliseconds
+	choice: "Extraction", 1
+          option: "From mid point"
+          option: "Mean from mid 30ms" 
 	positive Time_step 0.01
 	integer Maximum_number_of_formants 5
 	positive Maximum_formant_(Hz) 5500_(=adult female)
@@ -123,9 +128,13 @@ for file to nFiles
 			durIntervalms$ = fixed$(durIntervalms, tier)
 			#change decimal marker for commas
 			#durIntervalms$ = replace$ (durIntervalms$, ".", ",", 1)
-			
-			#looks for time aligned labels in other tiers
-			
+
+
+			# center 30 milliseconds
+			margin = (durInterval-0.03)/2 
+			if margin< 0
+				margin = 0
+			endif
 			
 			#writes interval in the output
 			appendFile: folder$ + "/"+ txtName$, myTextGrid$, tab$, nInterval, tab$, labelOfInterval$, tab$
@@ -133,8 +142,10 @@ for file to nFiles
 			#F0
 			selectObject: mySound
 			myPitch = To Pitch: 0, pitchFloor, pitchCeiling
+			
 			f0 = Get value at time: midInterval, "Hertz", "Linear"
-			#f0 = Get mean: 0, 0, "Hertz"
+			
+			#f0 = Get mean: startPoint+margin, endPoint-margin, "Hertz"
 			f0$ = fixed$(f0, 0)
 			removeObject: myPitch
 			
