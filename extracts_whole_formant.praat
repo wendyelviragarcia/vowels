@@ -47,7 +47,7 @@ form Pausas vowelFormants
 	comment Data formantic analysis
 	positive Time_step 0.01
 	integer Maximum_number_of_formants 5
-	positive Maximum_formant_(Hz) 5500_(=adult female)
+	positive Maximum_formant_(Hz) 5500
 	positive Window_length_(s) 0.025
 	real Preemphasis_from_(Hz) 50
 	comment  _
@@ -84,10 +84,17 @@ for file to nFiles
 	selectObject: myTextGrid
 	nOfIntervals = Get number of intervals: tier
 	Convert to Unicode
-	
+
+	#writes interval in the output
+	writeFileLine: folder$ + "/"+ base$+ ".txt", "fileName", tab$ , "nInterval", tab$, "Label interval", tab$, "F0", tab$, "F1", tab$, "F2", tab$, "F", tab$, "F4", tab$, "Duration", tab$, "time", tab$
+			
+	#F0
+	selectObject: mySound
+	myPitch = To Pitch: 0, pitchFloor, pitchCeiling
+
 	#loops intervals
 	nInterval=1
-	for nInterval from 1 to nOfIntervals
+	for nInterval to nOfIntervals
 		selectObject: myTextGrid
 		labelOfInterval$ = Get label of interval: tier, nInterval
 	
@@ -117,16 +124,11 @@ for file to nFiles
 			#change decimal marker for commas
 			#durIntervalms$ = replace$ (durIntervalms$, ".", ",", 1)
 			
-			#looks for time aligned labels in other tiers
+		
 			
-			
-			#writes interval in the output
-			writeFileLine: folder$ + "/"+ base$+ ".txt", "fileName", tab$ , "nInterval", tab$, "Label interval", tab$, "F0 [Hz]", tab$, "F1 [Hz]", tab$, "F2 [Hz]", tab$, "F3 [Hz]", tab$, "F4 [Hz]", tab$, "Duration[ms]", tab$, "time", tab$
 			
 						
-			#F0
-			selectObject: mySound
-			myPitch = To Pitch: 0, pitchFloor, pitchCeiling
+			selectObject: myPitch
 			f0 = Get value at time: midInterval, "Hertz", "Linear"
 			f0$ = fixed$(f0, 0)
 			removeObject: myPitch
