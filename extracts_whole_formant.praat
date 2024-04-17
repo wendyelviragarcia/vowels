@@ -131,7 +131,6 @@ for file to nFiles
 			selectObject: myPitch
 			f0 = Get value at time: midInterval, "Hertz", "Linear"
 			f0$ = fixed$(f0, 0)
-			removeObject: myPitch
 			
 			#look for formants
 			selectObject: mySound
@@ -151,15 +150,15 @@ for file to nFiles
 				# Save result to text file:
 				appendFile: folder$ + "/"+ base$ + ".txt", base$, tab$, nInterval, tab$, labelOfInterval$, tab$
 				appendFile: folder$ + "/"+ base$ + ".txt", f0$, tab$, f1$, tab$, f2$, tab$, f3$, tab$, f4$, tab$, durIntervalms, tab$, time, newline$
-				
+			# end of loop for points	
 			endfor
 			removeObject: myFormant
 		endif
 		#close interval loop
-	
+	# end of loop for intervals
 	endfor
-	#close file loop
-removeObject: myTextGrid, mySound
+removeObject: myTextGrid, mySound, myPitch
+#end of for files
 endfor
 removeObject: myList
 	echo Done.
