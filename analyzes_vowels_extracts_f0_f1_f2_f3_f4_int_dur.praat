@@ -95,7 +95,11 @@ for file to nFiles
 	selectObject: mySound
 	myFormant = To Formant (burg): time_step, maximum_number_of_formants, maximum_formant, window_length, preemphasis_from
 	selectObject: mySound
-	myIntensity = To Intensity: 500, 0, "yes"	
+	myIntensity = To Intensity: 500, 0, "yes"
+
+	#F0
+	selectObject: mySound
+	myPitch = To Pitch: 0, pitchFloor, pitchCeiling
 
 	#loops intervals
 	nInterval=1
@@ -135,13 +139,10 @@ for file to nFiles
 			#writes interval in the output
 			appendFile: folder$ + "/"+ txtName$, myTextGrid$, tab$, nInterval, tab$, labelOfInterval$, tab$
 						
-			#F0
-			selectObject: mySound
-			myPitch = To Pitch: 0, pitchFloor, pitchCeiling
 			
+			selectObject: myPitch
 			f0 = Get value at time: midInterval, "Hertz", "Linear"
 			
-
 			if extraction = 2
 				# center 30 milliseconds
 				margin = (durInterval-0.03)/2 
