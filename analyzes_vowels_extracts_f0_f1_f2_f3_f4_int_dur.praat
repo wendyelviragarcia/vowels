@@ -1,12 +1,12 @@
 
 ##################################
 # vowelFormants v1 (17 January 2017)
-# This script goes through all the files in a folder and writes in a txt informaition about formants, duration, intensity and F0.
+# This script goes through all the files in a folder and writes in a txt information about formants, duration, intensity and F0.
 #
 #		REQUIREMENTS [INPUT]
 #	A sound and a Textgrid with THE SAME filename and without spaces in the filename. For example this_is_my_sentence.wav and this_is_my_sentence.TextGrid
 #	The format of the TextGrid must be: tier1 interval for each sound, the script will analyse only intervals with labels that have one of these symbols
-#	a, e, i ,o ,u, ɪ, ɛ, æ, ɑ, ɔ, ʊ, ʌ, ɝ
+#	a, e, i ,o ,u, ɪ, ɛ, æ, ɑ, ɔ, ʊ, ʌ, ɝ. You can add more or remove them at line 100.
 		
 #
 #		INSTRUCTIONS 
@@ -39,9 +39,11 @@
 #########	FORM	###############
 
 form Pausas vowelFormants
+	comment Where do you have your wavs and TextGrids?
 	sentence Folder /Users/name/Desktop/data
+	comment Name of output (it will be saved in the same folder whre your wavs are)
 	sentence txtName results.txt
-	comment In which tier do you have the sound per sound segmentation with your vowels labelled?
+	comment In which tier do you have the by-sound segmentation with your vowels labelled?
 	integer tier 1
 	comment _
 	comment Data formantic analysis
@@ -132,6 +134,7 @@ for file to nFiles
 			selectObject: mySound
 			myPitch = To Pitch: 0, pitchFloor, pitchCeiling
 			f0 = Get value at time: midInterval, "Hertz", "Linear"
+			#f0 = Get mean: 0, 0, "Hertz"
 			f0$ = fixed$(f0, 0)
 			removeObject: myPitch
 			
