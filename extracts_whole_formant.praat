@@ -29,6 +29,7 @@
 #		i) F4
 #		j) durIntervalms
 #		k) time of point
+# 		h) intensity
 #
 #
 # (c) Wendy Elvira García (2017) wen dy el vi  r a g a r c ia @ g m a i l. c o m 
@@ -86,11 +87,13 @@ for file to nFiles
 	Convert to Unicode
 
 	#writes interval in the output
-	writeFileLine: folder$ + "/"+ base$+ ".txt", "fileName", tab$ , "nInterval", tab$, "Label interval", tab$, "F0", tab$, "F1", tab$, "F2", tab$, "F", tab$, "F4", tab$, "Duration", tab$, "time", tab$
+	writeFileLine: folder$ + "/"+ base$+ ".txt", "fileName", tab$ , "nInterval", tab$, "Label_interval", tab$, "F0", tab$, "F1", tab$, "F2", tab$, "F3", tab$, "F4", tab$, "duration", tab$, "time", tab$, "intensity"
 			
 	#F0
 	selectObject: mySound
 	myPitch = To Pitch: 0, pitchFloor, pitchCeiling
+	# intensity
+	myIntensity = To Intensity: 100, 0, "yes"
 
 	#loops intervals
 	nInterval=1
@@ -147,9 +150,12 @@ for file to nFiles
 				f2$ = fixed$(f2, 0)
 				f3$ = fixed$(f3, 0)
 				f4$ = fixed$(f4, 0)
+				selectObject: myIntensity
+				int = Get value at time: time, "nearest"
+
 				# Save result to text file:
 				appendFile: folder$ + "/"+ base$ + ".txt", base$, tab$, nInterval, tab$, labelOfInterval$, tab$
-				appendFile: folder$ + "/"+ base$ + ".txt", f0$, tab$, f1$, tab$, f2$, tab$, f3$, tab$, f4$, tab$, durIntervalms, tab$, time, newline$
+				appendFile: folder$ + "/"+ base$ + ".txt", f0$, tab$, f1$, tab$, f2$, tab$, f3$, tab$, f4$, tab$, durIntervalms, tab$, time, tab$, int, newline$
 			# end of loop for points	
 			endfor
 			removeObject: myFormant
