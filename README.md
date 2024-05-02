@@ -31,5 +31,5 @@ j) Duration of the vowel
 k) Intensity of the vowel at its mid point or mean intensity in the interval.
 
 ## CREDITS
- (c) Wendy Elvira García [Contact] (https://www.ub.edu/phoneticslaboratory/sites/wendyelvira/contact.html)
- [Laboratori de Fonètica (Universitat de Barcelona)] (https://www.ub.edu/phoneticslaboratory)
+ (c) Wendy Elvira García [Contact](https://www.ub.edu/phoneticslaboratory/sites/wendyelvira/contact.html)
+ [Laboratori de Fonètica (Universitat de Barcelona)](https://www.ub.edu/phoneticslaboratory)
