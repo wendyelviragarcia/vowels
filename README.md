@@ -1,7 +1,9 @@
 
 
- # vowelFormants v1 (17 January 2017)
- This Praat script goes through all the files in a folder and writes in a txt information about formants, duration, intensity and F0.
+ # Vowel scripts
+ This folder contains two scripts:
+ 1) This Praat script goes through all the files in a folder and writes in a txt information about formants, duration, intensity and F0.
+ 2) A Praat script that extracts the whole formant of labelled intervals that contain a vowel. It can be used with a by-sentence segemntation, or by-syllable segmentation. From eacha time step it extracts a the formants value, intensity, F0 and duration of the interval. This type of dataset is valuable to use with GAMMs. 
 
 ## REQUIREMENTS [INPUT]
 A sound and a Textgrid with THE SAME filename and without spaces in the filename. For example this_is_my_sentence.wav and this_is_my_sentence.TextGrid
@@ -28,9 +30,9 @@ f) F2
 h) F3
 i) F4
 j) Duration of the vowel
-k) Intensity of the vowel at its mid point
+k) Intensity of the vowel at its mid point or mean intensity in the interval.
 
 ## CREDITS
- (c) Wendy Elvira García (2017) wendyelvira.ga/contact.html
- Laboratori de Fonètica (Universitat de Barcelona) http://stel.ub.edu/labfon/en
+ (c) Wendy Elvira García (2024) [Contact](https://www.ub.edu/phoneticslaboratory/sites/wendyelvira/contact.html)
+ Laboratori de Fonètica (Universitat de Barcelona) [Lab Fonètica Barcelona](https://www.ub.edu/phoneticslaboratory)
 
