@@ -93,6 +93,7 @@ for file to nFiles
 	selectObject: mySound
 	myPitch = To Pitch: 0, pitchFloor, pitchCeiling
 	# intensity
+	selectObject: mySound
 	myIntensity = To Intensity: 100, 0, "yes"
 
 	#loops intervals
