@@ -1,5 +1,3 @@
-
-
  # Vowel scripts
  This folder contains two scripts:
  1) This Praat script goes through all the files in a folder and writes in a txt information about formants, duration, intensity and F0.
@@ -20,10 +18,10 @@ c) Data to optimise the formantic analysis
 d) Data for optimizing the pitch (F0) detection
 
 ## OUTPUT
-The output is a tab separated txt file (can be dragged to Excel, beware decimals are ".") with the following information in columns.
+The output is a tab separated txt file (can be dragged to Excel, beware decimals are ".") with the following information in columns. Depending on the script that you are using you will find an interval per row or a sample point per row.
 a) file name
 b) number of the Interval
-c) label of the interval in the tier of the analysis: vowel
+c) label of the interval in the tier of the analysis: vowel or sentence
 d) F0
 e) F1
 f) F2
@@ -33,6 +31,5 @@ j) Duration of the vowel
 k) Intensity of the vowel at its mid point or mean intensity in the interval.
 
 ## CREDITS
- (c) Wendy Elvira García (2024) [Contact](https://www.ub.edu/phoneticslaboratory/sites/wendyelvira/contact.html)
- Laboratori de Fonètica (Universitat de Barcelona) [Lab Fonètica Barcelona](https://www.ub.edu/phoneticslaboratory)
-
+ (c) Wendy Elvira García [Contact] (https://www.ub.edu/phoneticslaboratory/sites/wendyelvira/contact.html)
+ [Laboratori de Fonètica (Universitat de Barcelona)] (https://www.ub.edu/phoneticslaboratory)
