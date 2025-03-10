@@ -1,11 +1,11 @@
 
 ##################################
-# vowelFormants v1 (17 January 2017)
-# This script goes through all the files in a folder and writes in a txt information about formants, duration, intensity and F0.
+# Formant track (time-normalized) (March 2025)
+# This script goes through all the files in a folder and writes in a txt the formant tracks of an interval than contains a vowel symbol.
 #
 #		REQUIREMENTS [INPUT]
 #	A sound and a Textgrid with THE SAME filename and without spaces in the filename. For example this_is_my_sentence.wav and this_is_my_sentence.TextGrid
-#	The format of the TextGrid must be: tier1 interval for each sound, the script will analyse only intervals with labels that have one of these symbols
+#	The format of the TextGrid must be: tier interval for each sound, the script will analyse only intervals with labels that have one of these symbols
 #	a, e, i ,o ,u, ɪ, ɛ, æ, ɑ, ɔ, ʊ, ʌ, ɝ
 		
 #
@@ -15,59 +15,74 @@
 #		a) Folder where the files you want to analyse are
 #		b) Name of the txt where the results will be saved
 #		c) Data to optimise the formantic analysis
-#		d) Data to optimise the pitch (F0) detection
 #
 #		OUTPUT
 #	The output is a tab separated txt file (can be dragged to Excel) with the following information in columns.
 #		a) file name
-#		b) number of the Interval
+#		b) number of the Interval in the Textgrid
 #		c) label of the interval in the tier of the analysis: vowel
+#		b) number of point of the track (this is the normalized time if you have chosen  the automatic time-step)
+#		b) time when the data is measured
 #		d) F0
 #		e) F1
 #		f) F2
 #		h) F3
 #		i) F4
 #		j) durIntervalms
-#		k) time of point
 # 		h) intensity
 #
 #
-# (c) Wendy Elvira García (2017) wen dy el vi  r a g a r c ia @ g m a i l. c o m 
-# Laboratori de Fonètica (Universitat de Barcelona) http://stel.ub.edu/labfon/en
+# (c) Wendy Elvira García (2025) https://www.ub.edu/phoneticslaboratory/sites/wendyelvira/ 
+# Laboratori de Fonètica (Universitat de Barcelona)
 #
 #################################
 
 #########	FORM	###############
 
-form Pausas vowelFormants
-	sentence Folder C:\Users\labfonub99\Desktop\formant
-	sentence txtName results.txt
-	comment In which tier do you have the sound per sound segmentation with you vowels labelled?
-	integer tier 1
-	comment _
-	comment Data formantic analysis
-	positive Time_step 0.01
-	integer Maximum_number_of_formants 5
-	positive Maximum_formant_(Hz) 5500
-	positive Window_length_(s) 0.025
-	real Preemphasis_from_(Hz) 50
-	comment  _
-	comment Pitch analysis data
-	integer pitchFloor 75
-	integer pitchCeiling 600
-endform
+
+   form: "vowelFormants"
+      sentence: "Folder", "C:\Users\labfonub99\Desktop\formant"
+      comment: "the results file will be saved in the same folder your wax+Textgrids are"
+       sentence: "txtName", "f_track"
+	comment: "In which tier do you have the sound per sound segmentation with you vowels labelled?"
+      natural: "tier", "1"
+      comment: "-"
+		
+		comment: "You can set your own time-step or use the option for having normalized time (30 points by sound),"
+		comment:  "you will also have the real original time in the results"
+      choice: "time_step_type", 2
+         option: "Manual"
+         option: "Automatic_for_30_values_per_segment"
+		comment: "Time step manual only used if set to manual"
+       positive: "Time_step_manual", "0.02"
+    
+    comment: "You can change the Maximum formant to 5000 if you are working with deep voices (usually male)"
+	integer: "Maximum_number_of_formants", "5"
+	positive: "Maximum_formant", "5500"
+	
+
+   endform
+
+#########	PREDEFINED VARIABLES FOR THE ANALYSIS	###############
+
+window_length = 0.025
+preemphasis_from= 50
+
+#  Pitch analysis data
+ pitchFloor = 75
+ pitchCeiling = 600
 
 #################################
-#################################
-
-# variables 
 
 #checks whether the file exists
-if fileReadable(folder$ + "/" + txtName$) = 1
+if fileReadable(folder$ + "/" + txtName$ +".txt") = 1
 	pause The file already exists. If you click continue it will be overwritten.
 endif
 echo 'folder$'
-#creates the txt output with its fisrt line
+
+#writes interval in the output
+writeFileLine: folder$ + "/"+ txtName$+ ".txt", "fileName", tab$ , "nInterval", tab$, "Label_interval", tab$,"n_point", tab$, "original_time", tab$, "F0", tab$, "F1", tab$, "F2", tab$, "F3", tab$, "F4", tab$, "duration", tab$, "intensity"
+
 
 # index files for loop
 myList = Create Strings as file list: "myList", folder$ + "/" +"*.wav"
@@ -86,15 +101,17 @@ for file to nFiles
 	nOfIntervals = Get number of intervals: tier
 	Convert to Unicode
 
-	#writes interval in the output
-	writeFileLine: folder$ + "/"+ base$+ ".txt", "fileName", tab$ , "nInterval", tab$, "Label_interval", tab$, "F0", tab$, "F1", tab$, "F2", tab$, "F3", tab$, "F4", tab$, "duration", tab$, "time", tab$, "intensity"
-			
+	
 	#F0
 	selectObject: mySound
 	myPitch = To Pitch: 0, pitchFloor, pitchCeiling
 	# intensity
 	selectObject: mySound
 	myIntensity = To Intensity: 100, 0, "yes"
+
+	#formant created with 0.01 time-step, we will extract the real rime step later (this is preallocated to speed up the analysis)
+	selectObject: mySound
+	myFormant = To Formant (burg): 0.01, maximum_number_of_formants, maximum_formant, window_length, preemphasis_from
 
 	#loops intervals
 	nInterval=1
@@ -124,25 +141,29 @@ for file to nFiles
 			midInterval = startPoint +(durInterval/2)
 			durIntervalms = durInterval*1000
 			#fix decimals
-			#durIntervalms$ = fixed$(durIntervalms, 5)
+			durIntervalms$ = fixed$(durIntervalms, 0)
 			#change decimal marker for commas
 			#durIntervalms$ = replace$ (durIntervalms$, ".", ",", 1)
-			
-		
-			
-			
 						
 			selectObject: myPitch
 			f0 = Get value at time: midInterval, "Hertz", "Linear"
 			f0$ = fixed$(f0, 0)
 			
+			
+			if time_step_type = 1
+				time_step = time_step_manual
+			else 
+				time_step = durInterval / 30
+			endif
+
+			nPoints = durInterval / time_step
+
 			#look for formants
-			selectObject: mySound
-			myFormant = To Formant (burg): time_step, maximum_number_of_formants, maximum_formant, window_length, preemphasis_from
-			nPoints= Get number of frames
+			
+			myTime = 0
 			for point to nPoints
 				selectObject: myFormant
-				time = Get time from frame number: point
+				time = startPoint+myTime
 				f1 = Get value at time: 1, time, "Hertz", "Linear"
 				f2 = Get value at time: 2, time, "Hertz", "Linear"
 				f3 = Get value at time: 3, time, "Hertz", "Linear"
@@ -153,13 +174,15 @@ for file to nFiles
 				f4$ = fixed$(f4, 0)
 				selectObject: myIntensity
 				int = Get value at time: time, "nearest"
+				int$ = fixed$(int, 0)
 
+
+				myTime = myTime + time_step
 				# Save result to text file:
-				appendFile: folder$ + "/"+ base$ + ".txt", base$, tab$, nInterval, tab$, labelOfInterval$, tab$
-				appendFile: folder$ + "/"+ base$ + ".txt", f0$, tab$, f1$, tab$, f2$, tab$, f3$, tab$, f4$, tab$, durIntervalms, tab$, time, tab$, int, newline$
+				appendFile: folder$ + "/"+ txtName$ + ".txt", base$, tab$, nInterval, tab$, labelOfInterval$, tab$
+				appendFile: folder$ + "/"+ txtName$ + ".txt", point, tab$, time, tab$, f0$, tab$, f1$, tab$, f2$, tab$, f3$, tab$, f4$, tab$, durIntervalms$, tab$,  int$, newline$
 			# end of loop for points	
 			endfor
-			removeObject: myFormant
 		endif
 		#close interval loop
 	# end of loop for intervals

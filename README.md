@@ -1,7 +1,7 @@
  # Vowel scripts
  This folder contains two scripts:
- 1) This Praat script goes through all the files in a folder and writes in a txt information about formants, duration, intensity and F0.
- 2) A Praat script that extracts the whole formant of labelled intervals that contain a vowel. It can be used with a by-sentence segemntation, or by-syllable segmentation. From eacha time step it extracts a the formants value, intensity, F0 and duration of the interval. This type of dataset is valuable to use with GAMMs. 
+ 1) This Praat script goes through all the files in a folder and writes in a txt information about formants, duration, intensity and F0. It extracts either the mid-point or the mean of the 30 mid milliseconds.
+ 2) A Praat script that extracts the whole formant (formant-track) of labelled intervals that contain a vowel. From each time step it extracts the formants value, intensity, F0 and duration of the interval. It can be time normalized (30 points by segment) or with the same time-step for the whole folder. The time-normalized version is is useful to analyze formant tracks with GAMMs or similar. 
 
 ## REQUIREMENTS [INPUT]
 A sound and a Textgrid with THE SAME filename and without spaces in the filename. For example this_is_my_sentence.wav and this_is_my_sentence.TextGrid
