@@ -47,11 +47,12 @@ form Pausas vowelFormants
 	integer tier 1
 	comment _
 	comment Data formantic analysis
-comment Do you want to extract data from the mid point? 
-comment Or the mean from 30 centered milliseconds
+comment Do you want to extract data from the mid point 
+comment or the mean from centered 50% of the vowel?
 	choice: "Extraction", 1
           option: "From mid point"
-          option: "Mean from mid 30ms" 
+          option: "Mean from mid 50% of the vowel" 
+
 	positive Time_step 0.01
 	integer Maximum_number_of_formants 5
 	positive Maximum_formant_(Hz) 5500_(=adult female)
@@ -143,12 +144,9 @@ for file to nFiles
 			selectObject: myPitch
 			f0 = Get value at time: midInterval, "Hertz", "Linear"
 			
+			
 			if extraction = 2
-				# center 30 milliseconds
-				margin = (durInterval-0.03)/2 
-				if margin< 0
-					margin = 0
-				endif
+				margin = durInterval * 0.5 / 2
 				f0 = Get mean: startPoint+margin, endPoint-margin, "Hertz"
 			endif
 			
