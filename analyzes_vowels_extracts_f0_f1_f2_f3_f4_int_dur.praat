@@ -79,7 +79,7 @@ if fileReadable(folder$ + "/" + txtName$) = 1
 endif
 echo 'folder$'
 #creates the txt output with its fisrt line
-writeFileLine: folder$ + "/"+ txtName$, "folder", tab$ , "fileName", tab$ ,"nInterval", tab$, "Label interval", tab$, "F0 [Hz]", tab$, "F1 [Hz]", tab$, "F2 [Hz]", tab$, "F3 [Hz]", tab$, "F4 [Hz]", tab$, "Duration[ms]", tab$, "Intensity [ms]", tab$
+writeFileLine: folder$ + "/"+ txtName$, "Folder", tab$ , "Filename", tab$ ,"nInterval", tab$, "Label_interval", tab$, "F0", tab$, "F1", tab$, "F2", tab$, "F3", tab$, "F4", tab$, "Start_point", tab$, "Duration_ms", tab$, "Intensity_dB"
 
 if iterative = 2
 	myListFolders = Create Strings as folder list: "myFolders", folder$ + "/"
@@ -164,7 +164,7 @@ for file to nFiles
 			midInterval = startPoint +(durInterval/2)
 			durIntervalms = durInterval*1000
 			#fix decimals
-			durIntervalms$ = fixed$(durIntervalms, tier)
+			durIntervalms$ = fixed$(durIntervalms, 0)
 			#change decimal marker for commas
 			#durIntervalms$ = replace$ (durIntervalms$, ".", ",", 1)
 
@@ -172,7 +172,7 @@ for file to nFiles
 			
 			
 			#writes interval in the output
-			appendFile: folder$ + "/"+ txtName$, subfolder$, myTextGrid$, tab$, nInterval, tab$, labelOfInterval$, tab$
+			appendFile: folder$ + "/"+ txtName$, subfolder$, tab$, myTextGrid$, tab$, nInterval, tab$, labelOfInterval$, tab$
 						
 			
 			selectObject: myPitch
@@ -204,7 +204,7 @@ for file to nFiles
 			selectObject:myIntensity
 			midInt = Get value at time: midInterval, "Cubic"
 			midInt$ = fixed$(midInt,0)
-			appendFileLine: folder$ + "/"+ txtName$, durIntervalms$, tab$, midInt$
+			appendFileLine: folder$ + "/"+ txtName$, startPoint, tab$, durIntervalms$, tab$, midInt$
 		endif
 		#close interval loop
 	
