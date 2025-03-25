@@ -41,6 +41,10 @@
 form Pausas vowelFormants
 	comment Where do you have your wavs and TextGrids?
 	sentence Folder /Users/name/Desktop/data
+	comment Type of loop
+	choice: "Iterative", 2
+          option: "Only files"
+          option: "Folders and files" 
 	comment Name of output (it will be saved in the same folder whre your wavs are)
 	sentence txtName results.txt
 	comment In which tier do you have the by-sound segmentation with your vowels labelled?
@@ -55,7 +59,7 @@ comment or the mean from centered 50% of the vowel?
 
 	positive Time_step 0.01
 	integer Maximum_number_of_formants 5
-	positive Maximum_formant_(Hz) 5500_(=adult female)
+	positive Maximum_formant_(Hz) 5500
 	positive Window_length_(s) 0.025
 	real Preemphasis_from_(Hz) 50
 	comment  _
@@ -75,20 +79,47 @@ if fileReadable(folder$ + "/" + txtName$) = 1
 endif
 echo 'folder$'
 #creates the txt output with its fisrt line
-writeFileLine: folder$ + "/"+ txtName$, "fileName", tab$ , "nInterval", tab$, "Label interval", tab$, "F0 [Hz]", tab$, "F1 [Hz]", tab$, "F2 [Hz]", tab$, "F3 [Hz]", tab$, "F4 [Hz]", tab$, "Duration[ms]", tab$, "Intensity [ms]", tab$
+writeFileLine: folder$ + "/"+ txtName$, "folder", tab$ , "fileName", tab$ ,"nInterval", tab$, "Label interval", tab$, "F0 [Hz]", tab$, "F1 [Hz]", tab$, "F2 [Hz]", tab$, "F3 [Hz]", tab$, "F4 [Hz]", tab$, "Duration[ms]", tab$, "Intensity [ms]", tab$
+
+if iterative = 2
+	myListFolders = Create Strings as folder list: "myFolders", folder$ + "/"
+	nFolders = Get number of strings
+
+		if nFolders = 0
+			nFolders = 1
+		endif
+	#loops all files in folder
+
+else 
+		nFolders = 1
+endif
+
+
+
+for subfolder to nFolders
+	if iterative = 2
+		selectObject: myListFolders
+		subfolder$ = Get string: subfolder
+		
+		path$ = folder$ + subfolder$
+	else
+		path$ = folder$
+		subfolder$= folder$
+
+	endif
 
 # index files for loop
-myList = Create Strings as file list: "myList", folder$ + "/" +"*.TextGrid"
+myList = Create Strings as file list: "myList", path$ + "/" +"*.TextGrid"
 nFiles = Get number of strings
-pause
+
 #loops all files in folder
 for file to nFiles
 	selectObject: myList
 	nameFile$ = Get string: file
-	myTextGrid = Read from file: folder$ + "/"+ nameFile$
+	myTextGrid = Read from file: path$ + "/"+ nameFile$
 	#base name
 	myTextGrid$ = selected$("TextGrid")
-	mySound = Read from file: folder$ + "/"+ myTextGrid$ + ".wav"
+	mySound = Read from file: path$ + "/"+ myTextGrid$ + ".wav"
 	selectObject: myTextGrid
 	nOfIntervals = Get number of intervals: tier
 	Convert to Unicode
@@ -109,19 +140,22 @@ for file to nFiles
 		labelOfInterval$ = Get label of interval: tier, nInterval
 	
 		#perform actions only for vowels
-		if index(labelOfInterval$, "a")  <> 0 or 
-		... index(labelOfInterval$, "e") <> 0 or 
-		... index(labelOfInterval$, "i") <> 0 or 
-		... index(labelOfInterval$, "o") <> 0 or 
-		... index(labelOfInterval$, "u") <> 0 or 
-		... index(labelOfInterval$, "ɪ") <> 0 or 
-		... index(labelOfInterval$, "ɛ") <> 0 or 
-		... index(labelOfInterval$, "æ") <> 0 or 
-		... index(labelOfInterval$, "ɑ") <> 0 or 
-		... index(labelOfInterval$, "ɔ") <> 0 or 
-		... index(labelOfInterval$, "ʊ") <> 0 or 
-		... index(labelOfInterval$, "ʌ") <> 0 or 
-		... index(labelOfInterval$, "ɝ") <> 0
+		# IPA and SAMPA if there are not overlappings
+		if index_regex(labelOfInterval$, "[aeiouɪɛæɑɔʊʌəAEIOU@]")  <> 0
+
+		#if index(labelOfInterval$, "a")  <> 0 or 
+		#... index(labelOfInterval$, "e") <> 0 or 
+		#... index(labelOfInterval$, "i") <> 0 or 
+		#... index(labelOfInterval$, "o") <> 0 or 
+		#... index(labelOfInterval$, "u") <> 0 or 
+		#... index(labelOfInterval$, "ɪ") <> 0 or 
+		#... index(labelOfInterval$, "ɛ") <> 0 or 
+		#... index(labelOfInterval$, "æ") <> 0 or 
+		#... index(labelOfInterval$, "ɑ") <> 0 or 
+		#... index(labelOfInterval$, "ɔ") <> 0 or 
+		#... index(labelOfInterval$, "ʊ") <> 0 or 
+		#... index(labelOfInterval$, "ʌ") <> 0 or 
+		#... index(labelOfInterval$, "ə") <> 0
 		
 			#Gets time of the interval
 			endPoint = Get end point: tier, nInterval
@@ -138,7 +172,7 @@ for file to nFiles
 			
 			
 			#writes interval in the output
-			appendFile: folder$ + "/"+ txtName$, myTextGrid$, tab$, nInterval, tab$, labelOfInterval$, tab$
+			appendFile: folder$ + "/"+ txtName$, subfolder$, myTextGrid$, tab$, nInterval, tab$, labelOfInterval$, tab$
 						
 			
 			selectObject: myPitch
@@ -177,6 +211,8 @@ for file to nFiles
 	endfor
 	#close file loop
 removeObject: myTextGrid, mySound, myFormant, myIntensity, myPitch
+endfor
+# final loop of subfolders
 endfor
 removeObject: myList
 	echo Done.
